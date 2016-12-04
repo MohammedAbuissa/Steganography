@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Steganography
 {
-    public class Class1
+    public interface ISteganography<Tmsg, Tcontent>
     {
+        Tmsg Hide(Tcontent Content, Tmsg OriginalMsg);
+        Tcontent Find(Tmsg ModifiedMsg);
     }
 }
