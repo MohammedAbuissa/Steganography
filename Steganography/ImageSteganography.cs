@@ -12,11 +12,13 @@ namespace Steganography
         {
             if (ModifiedMsg == null)
                 throw new ArgumentNullException($"the value of {nameof(ModifiedMsg)} can't be null");
+
             bool[,] hiddenContent = new bool[ModifiedMsg.GetLength(0),ModifiedMsg.GetLength(1)];
             for (int i = 0; i < ModifiedMsg.GetLength(0); i++)
             {
                 for (int j = 0; j < ModifiedMsg.GetLength(1); j++)
                 {
+                    //even 
                     hiddenContent[i, j] = ModifiedMsg[i, j] % 2 == 0;
                 }
             }
@@ -37,15 +39,16 @@ namespace Steganography
                 for (int j = 0; j < OriginalMsg.GetLength(1); j++)
                 {
                     var oldPixel = OriginalMsg[i, j];
-                    modifiedMsg[i, j] = Content[i,j] && oldPixel%2==0 ? oldPixel : changeByte(oldPixel);
+                    modifiedMsg[i, j] = Content[i,j] == (oldPixel%2==0) ? oldPixel : changeByte(oldPixel);
                 }
             }
             return modifiedMsg;
         }
 
+        const byte HalfByte = byte.MaxValue / 2;
         byte changeByte (byte OriginalByte)
         {
-            return (byte)(OriginalByte + Sign(byte.MaxValue / 2 - OriginalByte) * 1);
+            return (byte)(OriginalByte + Sign( HalfByte - OriginalByte));
         }
 
         int Sign (int Number)

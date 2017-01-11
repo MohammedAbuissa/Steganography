@@ -26,7 +26,7 @@ namespace SteganographyTests
         {
             //Arrange
             ISteganography<byte[,], bool[,]> s = new ImageSteganography();
-            var content = new bool[1, 1] { { false } };
+            var content = new bool[1, 1] { { true } };
             var originalMsg = new byte[1, 1] { { 255 } };
             var expectedValue = (byte)(originalMsg[0, 0] - 1);
             //Act
@@ -41,6 +41,58 @@ namespace SteganographyTests
             ISteganography<byte[,], bool[,]> s = new ImageSteganography();
             var content = new bool[1, 1] { { true } };
             var originalMsg = new byte[1, 1] { { 127 } };
+            //Act
+            var modifiedMsg = s.Hide(content, originalMsg);
+            //Assert
+            Assert.AreNotEqual(originalMsg[0, 0], modifiedMsg[0, 0]);
+        }
+
+        [TestMethod]
+        public void Hide_ValidArrayWithOddValueAndFalseMsg_ValueNotChange()
+        {
+            //Arrange
+            ISteganography<byte[,], bool[,]> s = new ImageSteganography();
+            var content = new bool[1, 1] { { false } };
+            var originalMsg = new byte[1, 1] { { 51 } };
+            //Act
+            var modifiedMsg = s.Hide(content, originalMsg);
+            //Assert
+            Assert.AreEqual(originalMsg[0, 0], modifiedMsg[0, 0]);
+        }
+
+        [TestMethod]
+        public void Hide_ValidArrayWithEvenValueAndTrueMsg_ValueNotChange()
+        {
+            //Arrange
+            ISteganography<byte[,], bool[,]> s = new ImageSteganography();
+            var content = new bool[1, 1] { { true } };
+            var originalMsg = new byte[1, 1] { { 100 } };
+            //Act
+            var modifiedMsg = s.Hide(content, originalMsg);
+            //Assert
+            Assert.AreEqual(originalMsg[0, 0], modifiedMsg[0, 0]);
+        }
+
+        [TestMethod]
+        public void Hide_ValidArrayWithOddValueAndTrueMsg_ValueChange()
+        {
+            //Arrange
+            ISteganography<byte[,], bool[,]> s = new ImageSteganography();
+            var content = new bool[1, 1] { { true } };
+            var originalMsg = new byte[1, 1] { { 51 } };
+            //Act
+            var modifiedMsg = s.Hide(content, originalMsg);
+            //Assert
+            Assert.AreNotEqual(originalMsg[0, 0], modifiedMsg[0, 0]);
+        }
+
+        [TestMethod]
+        public void Hide_ValidArrayWithEvenValueAndFalseMsg_ValueChange()
+        {
+            //Arrange
+            ISteganography<byte[,], bool[,]> s = new ImageSteganography();
+            var content = new bool[1, 1] { { false } };
+            var originalMsg = new byte[1, 1] { { 50 } };
             //Act
             var modifiedMsg = s.Hide(content, originalMsg);
             //Assert
